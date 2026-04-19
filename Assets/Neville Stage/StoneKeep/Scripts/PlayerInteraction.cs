@@ -16,7 +16,7 @@ namespace LylekGames.Tools
         {
             if (Input.GetKeyDown(interactKey))
             {
-                if (Physics.Raycast(raycastFrom.transform.position, raycastFrom.transform.forward, out hit, 3f))
+                if (Physics.Raycast(raycastFrom.transform.position, raycastFrom.transform.forward, out hit, 15f))
                 {
                     if (hit.transform.tag == "Interact")
                     {
