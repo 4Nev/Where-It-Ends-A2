@@ -3,7 +3,12 @@ guid: 67af79c9a57bee24cac5788b31593bf2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - timerDisplay: {instanceID: 0}
+  - statusDisplay: {instanceID: 0}
+  - sfxSource: {instanceID: 0}
+  - winSound: {fileID: 8300000, guid: afc1af17275ffec46b527f2bd3077e37, type: 3}
+  - loseSound: {fileID: 8300000, guid: 7d9bc0af78a2c1947a3a2e11b261fb8f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
