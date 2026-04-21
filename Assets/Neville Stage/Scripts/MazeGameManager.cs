@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement; // For switching to Menu
+using System.Collections;         // For the sound delay timer
 
 public class MazeGameManager : MonoBehaviour
 {
@@ -13,16 +15,15 @@ public class MazeGameManager : MonoBehaviour
     public TextMeshProUGUI statusDisplay;
 
     [Header("Audio Settings")]
-    public AudioSource sfxSource; // The speaker
-    public AudioClip winSound;    // Your 4s clip
-    public AudioClip loseSound;   // Your 2s clip
+    public AudioSource sfxSource; 
+    public AudioClip winSound;    
+    public AudioClip loseSound;   
 
     void Start()
     {
         currentTime = timeLimit;
         if (statusDisplay != null) statusDisplay.gameObject.SetActive(false);
         
-        // Auto-grab the AudioSource if you forgot to drag it in
         if (sfxSource == null) sfxSource = GetComponent<AudioSource>();
     }
 
@@ -37,12 +38,13 @@ public class MazeGameManager : MonoBehaviour
         }
         else
         {
-            EndGame("Lost Before It Ends...", false);
+            EndGame("You Lost Your Way...", false);
         }
     }
 
     void UpdateTimerUI()
     {
+        if (timerDisplay == null) return;
         int minutes = Mathf.FloorToInt(currentTime / 60);
         int seconds = Mathf.FloorToInt(currentTime % 60);
         timerDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
@@ -52,7 +54,7 @@ public class MazeGameManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            EndGame("The Journey Ends Here... You Win!", true);
+            EndGame("You Found the End!", true);
         }
     }
 
@@ -62,17 +64,25 @@ public class MazeGameManager : MonoBehaviour
         statusDisplay.text = message;
         statusDisplay.gameObject.SetActive(true);
 
-        // Play the appropriate sound
+        float delay = 2f; 
+
         if (didWin && winSound != null)
         {
             sfxSource.PlayOneShot(winSound);
+            delay = 4f; 
         }
         else if (!didWin && loseSound != null)
         {
             sfxSource.PlayOneShot(loseSound);
+            delay = 2f; 
         }
-        
-        if (currentTime < 0) currentTime = 0;
-        UpdateTimerUI();
+
+        StartCoroutine(ReturnToMenuAfterDelay(delay));
+    }
+
+    IEnumerator ReturnToMenuAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene("MenuScene");
     }
 }
