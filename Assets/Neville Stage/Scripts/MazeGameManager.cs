@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement; // For switching to Menu
-using System.Collections;         // For the sound delay timer
+using UnityEngine.SceneManagement; 
+using System.Collections;         
 
 public class MazeGameManager : MonoBehaviour
 {
@@ -21,6 +21,9 @@ public class MazeGameManager : MonoBehaviour
 
     void Start()
     {
+        // IMPORTANT: Ensure time is moving when the level starts
+        Time.timeScale = 1f; 
+        
         currentTime = timeLimit;
         if (statusDisplay != null) statusDisplay.gameObject.SetActive(false);
         
@@ -83,6 +86,21 @@ public class MazeGameManager : MonoBehaviour
     IEnumerator ReturnToMenuAfterDelay(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        SceneManager.LoadScene("MenuScene");
+        CleanUpAndLoadMenu(); // Use the cleanup helper
+    }
+
+    // Manual Home Button Call
+    public void ReturnToMenu()
+    {
+        CleanUpAndLoadMenu(); // Use the cleanup helper
+    }
+
+    // NEW: This helper ensures the Menu is actually usable when you get there
+    private void CleanUpAndLoadMenu()
+    {
+        Time.timeScale = 1f;                     // Unfreeze time
+        Cursor.lockState = CursorLockMode.None;  // Unlock the mouse
+        Cursor.visible = true;                   // Show the mouse
+        SceneManager.LoadScene("MenuScene");     // Load the scene
     }
 }

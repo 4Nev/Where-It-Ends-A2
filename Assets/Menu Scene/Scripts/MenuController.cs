@@ -3,44 +3,38 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
-    [Header("UI Panels")]
-    public GameObject mainButtonsPanel;   // Drag your first menu buttons here
-    public GameObject stageSelectorPanel; // Drag your new selector panel here
-
     void Start()
     {
-        // Makes sure the mouse is free to click buttons
+        // This is the "Fix" from your dev log: 
+        // Ensures mouse is visible and game isn't frozen when menu loads
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // Start with Main Menu visible, Stage Selector hidden
-        if (mainButtonsPanel != null) mainButtonsPanel.SetActive(true);
-        if (stageSelectorPanel != null) stageSelectorPanel.SetActive(false);
     }
 
-    // Opens the selector (Link to your "Stage" or "Start" button)
-    public void OpenStageSelector()
+    // This is the logic for your Help Button
+    public void LoadHelpScene()
     {
-        mainButtonsPanel.SetActive(false);
-        stageSelectorPanel.SetActive(true);
+        SceneManager.LoadScene("HelpScene"); 
+        // Make sure your help scene is named EXACTLY "HelpScene" in Unity
     }
 
-    // Goes back (Link to a "Back" button in the selector)
-    public void CloseStageSelector()
-    {
-        mainButtonsPanel.SetActive(true);
-        stageSelectorPanel.SetActive(false);
-    }
-
-    // Load Neville's Stage
+    // This is the logic for your Stage Button
     public void LoadNevilleStage()
     {
         SceneManager.LoadScene("Neville_Terrain_Stage");
     }
 
-    // Load Agnes's Stage
-    public void LoadAgnesStage()
+    // Use this for the "Back" button inside the Help Scene 
+    // to return to the main menu
+    public void LoadMainMenu()
     {
-        SceneManager.LoadScene("Agnes'Scene");
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("Game Quit Requested");
     }
 }
